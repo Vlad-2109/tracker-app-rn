@@ -1,10 +1,12 @@
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+import ExpensesOutput from '@/components/ExpensesOutput/ExpensesOutput';
 
 const AllExpensesPage = () => {
 	return (
-		<SafeAreaView edges={['bottom', 'left', 'right']} style={styles.container}>
-			<Text>All Expenses Page</Text>
+		<SafeAreaView edges={['left', 'right']} style={styles.container}>
+			<ExpensesOutput expensesPeriod="Total" />
 		</SafeAreaView>
 	);
 };
