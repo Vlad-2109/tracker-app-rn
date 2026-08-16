@@ -2,6 +2,7 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import Button from '@/components/UI/Button';
 import IconButton from '@/components/UI/IconButton';
 import { GLOBAL_STYLES } from '@/constants/styles';
 
@@ -13,6 +14,14 @@ const ManageExpensePage = () => {
 		console.log('Delete expense');
 	};
 
+	const handleCancel = () => {
+		console.log('Cancel');
+	};
+
+	const handleConfirm = () => {
+		console.log('Confirm');
+	};
+
 	return (
 		<SafeAreaView edges={['bottom', 'left', 'right']} style={styles.container}>
 			<Stack.Screen
@@ -20,6 +29,14 @@ const ManageExpensePage = () => {
 					title: isEditing ? 'Edit Expense' : 'Add Expense',
 				}}
 			/>
+			<View style={styles.buttonsContainer}>
+				<Button mode="flat" style={styles.button} onPress={handleCancel}>
+					Cancel
+				</Button>
+				<Button style={styles.button} onPress={handleConfirm}>
+					{isEditing ? 'Update' : 'Add'}
+				</Button>
+			</View>
 			{isEditing && (
 				<View style={styles.deleteContainer}>
 					<IconButton
@@ -41,6 +58,15 @@ const styles = StyleSheet.create({
 		flex: 1,
 		padding: 24,
 		backgroundColor: GLOBAL_STYLES.colors.primary800,
+	},
+	buttonsContainer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	button: {
+		minWidth: 120,
+		marginHorizontal: 8,
 	},
 	deleteContainer: {
 		marginTop: 16,
