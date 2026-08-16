@@ -5,16 +5,20 @@ import { GLOBAL_STYLES } from '@/constants/styles';
 import { getFormattedDate } from '@/utils/date';
 
 type ExpenseItemProps = {
+	id: string;
 	description: string;
 	amount: number;
 	date: Date;
 };
 
-const ExpenseItem = ({ description, amount, date }: ExpenseItemProps) => {
+const ExpenseItem = ({ id, description, amount, date }: ExpenseItemProps) => {
 	const router = useRouter();
 
 	const handleExpensePress = () => {
-		router.push(`/manage-expense`);
+		router.push({
+			pathname: '/manage-expense',
+			params: { editedExpenseId: id },
+		});
 	};
 
 	return (

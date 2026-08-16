@@ -19,7 +19,6 @@ export default function RootLayout() {
 				<Stack.Screen
 					name="manage-expense"
 					options={{
-						title: 'Manage Expense',
 						presentation: 'modal',
 						headerStyle: {
 							backgroundColor: GLOBAL_STYLES.colors.primary500,
