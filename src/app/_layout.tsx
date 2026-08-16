@@ -9,7 +9,7 @@ export default function RootLayout() {
 	return (
 		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
 			<StatusBar style="auto" />
-			<Stack >
+			<Stack>
 				<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 				<Stack.Screen
 					name="expenses-overview"
@@ -17,7 +17,7 @@ export default function RootLayout() {
 				/>
 				<Stack.Screen
 					name="manage-expense"
-					options={{ title: 'Manage Expense', presentation: 'modal' }}
+					options={{ title: 'Manage Expense' }}
 				/>
 			</Stack>
 		</SafeAreaProvider>

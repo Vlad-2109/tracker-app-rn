@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { GLOBAL_STYLES } from '@/constants/styles';
@@ -10,7 +11,11 @@ type ExpenseItemProps = {
 };
 
 const ExpenseItem = ({ description, amount, date }: ExpenseItemProps) => {
-	const handleExpensePress = () => {};
+	const router = useRouter();
+
+	const handleExpensePress = () => {
+		router.push(`/manage-expense`);
+	};
 
 	return (
 		<Pressable
