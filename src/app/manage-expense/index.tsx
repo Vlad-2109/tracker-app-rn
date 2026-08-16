@@ -1,4 +1,4 @@
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -7,19 +7,24 @@ import IconButton from '@/components/UI/IconButton';
 import { GLOBAL_STYLES } from '@/constants/styles';
 
 const ManageExpensePage = () => {
+	const router = useRouter();
+
 	const { editedExpenseId } = useLocalSearchParams();
 	const isEditing = !!editedExpenseId;
 
 	const handleDeleteExpense = () => {
 		console.log('Delete expense');
+		router.back();
 	};
 
 	const handleCancel = () => {
 		console.log('Cancel');
+		router.back();
 	};
 
 	const handleConfirm = () => {
 		console.log('Confirm');
+		router.back();
 	};
 
 	return (
