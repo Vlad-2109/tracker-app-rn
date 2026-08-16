@@ -1,3 +1,4 @@
+import { GLOBAL_STYLES } from '@/constants/styles';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import {
@@ -13,11 +14,18 @@ export default function RootLayout() {
 				<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 				<Stack.Screen
 					name="expenses-overview"
-					options={{ headerShown: false }}
+					options={{ title: 'Expenses Overview' }}
 				/>
 				<Stack.Screen
 					name="manage-expense"
-					options={{ title: 'Manage Expense' }}
+					options={{
+						title: 'Manage Expense',
+						presentation: 'modal',
+						headerStyle: {
+							backgroundColor: GLOBAL_STYLES.colors.primary500,
+						},
+						headerTintColor: '#fff',
+					}}
 				/>
 			</Stack>
 		</SafeAreaProvider>
