@@ -3,6 +3,8 @@ import { Tabs } from 'expo-router';
 
 import { GLOBAL_STYLES } from '@/constants/styles';
 
+import IconButton from '@/components/UI/IconButton';
+
 export default function TabLayout() {
 	return (
 		<Tabs
@@ -16,6 +18,14 @@ export default function TabLayout() {
 				},
 				tabBarActiveTintColor: GLOBAL_STYLES.colors.accent500,
 				tabBarInactiveTintColor: GLOBAL_STYLES.colors.primary200,
+				headerRight: ({ tintColor }) => (
+					<IconButton
+						icon="add"
+						size={24}
+						color={tintColor ?? '#fff'}
+						onPress={() => {}}
+					/>
+				),
 			}}
 		>
 			<Tabs.Screen
