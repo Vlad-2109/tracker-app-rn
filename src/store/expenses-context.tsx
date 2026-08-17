@@ -1,4 +1,5 @@
 import { createContext, useReducer } from 'react';
+import * as Crypto from 'expo-crypto';
 
 import { DUMMY_EXPENSES } from '@/data/expenses';
 import { Expense } from '@/types';
@@ -42,7 +43,7 @@ const expensesReducer = (state: Expense[], action: ExpensesAction) => {
 	const { type, payload } = action;
 	switch (type) {
 		case ExpensesActionKind.ADD:
-			return [{ id: crypto.randomUUID(), ...payload }, ...state];
+			return [{ id: Crypto.randomUUID(), ...payload }, ...state];
 		case ExpensesActionKind.DELETE:
 			return state.filter((expense) => expense.id !== payload);
 		case ExpensesActionKind.UPDATE:

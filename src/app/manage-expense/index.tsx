@@ -1,6 +1,9 @@
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { ExpensesContext } from '@/store/expenses-context';
 
 import Button from '@/components/UI/Button';
 import IconButton from '@/components/UI/IconButton';
@@ -8,22 +11,35 @@ import { GLOBAL_STYLES } from '@/constants/styles';
 
 const ManageExpensePage = () => {
 	const router = useRouter();
+	const { addExpense, updateExpense, deleteExpense } =
+		useContext(ExpensesContext);
 
 	const { editedExpenseId } = useLocalSearchParams();
 	const isEditing = !!editedExpenseId;
 
 	const handleDeleteExpense = () => {
-		console.log('Delete expense');
+		deleteExpense(editedExpenseId as string);
 		router.back();
 	};
 
 	const handleCancel = () => {
-		console.log('Cancel');
 		router.back();
 	};
 
 	const handleConfirm = () => {
-		console.log('Confirm');
+		if (isEditing) {
+			updateExpense(editedExpenseId as string, {
+				description: 'Test!!!',
+				amount: 29.99,
+				date: new Date('2026-08-21'),
+			});
+		} else {
+			addExpense({
+				description: 'Test',
+				amount: 100,
+				date: new Date('2026-08-17'),
+			});
+		}
 		router.back();
 	};
 
