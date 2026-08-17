@@ -10,7 +10,11 @@ const AllExpensesPage = () => {
 
 	return (
 		<SafeAreaView edges={['left', 'right']} style={styles.container}>
-			<ExpensesOutput expenses={expenses} expensesPeriod="Total" />
+			<ExpensesOutput
+				expenses={expenses}
+				expensesPeriod="Total"
+				fallbackText="No registered expenses found."
+			/>
 		</SafeAreaView>
 	);
 };

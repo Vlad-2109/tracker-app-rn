@@ -12,7 +12,7 @@ import { GLOBAL_STYLES } from '@/constants/styles';
 export default function RootLayout() {
 	return (
 		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
-			<StatusBar style="auto" />
+			<StatusBar style="light" />
 			<ExpensesContextProvider>
 				<Stack>
 					<Stack.Screen name="(tabs)" options={{ headerShown: false }} />

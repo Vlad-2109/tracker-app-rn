@@ -19,7 +19,11 @@ const RecentExpensesPage = () => {
 
 	return (
 		<SafeAreaView edges={['left', 'right']} style={styles.container}>
-			<ExpensesOutput expenses={recentExpenses} expensesPeriod="Last 7 Days" />
+			<ExpensesOutput
+				expenses={recentExpenses}
+				expensesPeriod="Last 7 Days"
+				fallbackText="No expenses registered for the last 7 days."
+			/>
 		</SafeAreaView>
 	);
 };
