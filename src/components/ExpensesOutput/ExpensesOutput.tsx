@@ -4,17 +4,18 @@ import ExpensesList from './ExpensesList';
 import ExpensesSummary from './ExpensesSummary';
 
 import { GLOBAL_STYLES } from '@/constants/styles';
-import { DUMMY_EXPENSES } from '@/data/expenses';
+import { Expense } from '@/types';
 
 type ExpensesOutputProps = {
+	expenses: Expense[];
 	expensesPeriod: string;
 };
 
-const ExpensesOutput = ({ expensesPeriod }: ExpensesOutputProps) => {
+const ExpensesOutput = ({ expenses, expensesPeriod }: ExpensesOutputProps) => {
 	return (
 		<View style={styles.container}>
-			<ExpensesSummary expenses={DUMMY_EXPENSES} periodName={expensesPeriod} />
-			<ExpensesList expenses={DUMMY_EXPENSES} />
+			<ExpensesSummary expenses={expenses} periodName={expensesPeriod} />
+			<ExpensesList expenses={expenses} />
 		</View>
 	);
 };
