@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ExpensesContext } from '@/store/expenses-context';
 
+import ExpenseForm from '@/components/ManageExpense/ExpenseForm';
 import Button from '@/components/UI/Button';
 import IconButton from '@/components/UI/IconButton';
 import { GLOBAL_STYLES } from '@/constants/styles';
@@ -50,6 +51,7 @@ const ManageExpensePage = () => {
 					title: isEditing ? 'Edit Expense' : 'Add Expense',
 				}}
 			/>
+			<ExpenseForm />
 			<View style={styles.buttonsContainer}>
 				<Button mode="flat" style={styles.button} onPress={handleCancel}>
 					Cancel
