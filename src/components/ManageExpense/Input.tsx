@@ -4,6 +4,7 @@ import {
 	Text,
 	TextInput,
 	View,
+	ViewStyle,
 	type StyleProp,
 	type TextInputProps,
 	type TextStyle,
@@ -11,10 +12,11 @@ import {
 
 type InputProps = {
 	label: string;
+	style?: StyleProp<ViewStyle>;
 	textInputConfig: TextInputProps;
 };
 
-const Input = ({ label, textInputConfig }: InputProps) => {
+const Input = ({ label, style, textInputConfig }: InputProps) => {
 	const inputStyles: StyleProp<TextStyle>[] = [styles.input];
 
 	if (textInputConfig && textInputConfig.multiline) {
@@ -22,7 +24,7 @@ const Input = ({ label, textInputConfig }: InputProps) => {
 	}
 
 	return (
-		<View style={styles.inputContainer}>
+		<View style={[styles.inputContainer, style]}>
 			<Text style={styles.label}>{label}</Text>
 			<TextInput {...textInputConfig} style={inputStyles} />
 		</View>
@@ -42,6 +44,7 @@ const styles = StyleSheet.create({
 		marginBottom: 4,
 	},
 	input: {
+		width: '100%',
 		backgroundColor: GLOBAL_STYLES.colors.primary100,
 		color: GLOBAL_STYLES.colors.primary700,
 		padding: 6,
