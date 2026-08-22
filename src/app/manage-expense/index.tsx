@@ -5,8 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ExpensesContext } from '@/store/expenses-context';
 
-import ExpenseForm from '@/components/ManageExpense/ExpenseForm';
-import Button from '@/components/UI/Button';
+import ExpenseForm, { type ExpenseData } from '@/components/ManageExpense/ExpenseForm';
 import IconButton from '@/components/UI/IconButton';
 import { GLOBAL_STYLES } from '@/constants/styles';
 
@@ -27,19 +26,11 @@ const ManageExpensePage = () => {
 		router.back();
 	};
 
-	const handleConfirm = () => {
+	const handleSubmit = (expenseData: ExpenseData) => {
 		if (isEditing) {
-			updateExpense(editedExpenseId as string, {
-				description: 'Test!!!',
-				amount: 29.99,
-				date: new Date('2026-08-21'),
-			});
+			updateExpense(editedExpenseId as string, expenseData);
 		} else {
-			addExpense({
-				description: 'Test',
-				amount: 100,
-				date: new Date('2026-08-17'),
-			});
+			addExpense(expenseData);
 		}
 		router.back();
 	};
@@ -51,15 +42,11 @@ const ManageExpensePage = () => {
 					title: isEditing ? 'Edit Expense' : 'Add Expense',
 				}}
 			/>
-			<ExpenseForm />
-			<View style={styles.buttonsContainer}>
-				<Button mode="flat" style={styles.button} onPress={handleCancel}>
-					Cancel
-				</Button>
-				<Button style={styles.button} onPress={handleConfirm}>
-					{isEditing ? 'Update' : 'Add'}
-				</Button>
-			</View>
+			<ExpenseForm
+				submitButtonLabel={isEditing ? 'Update' : 'Add'}
+				onCancel={handleCancel}
+				onSubmit={handleSubmit}
+			/>
 			{isEditing && (
 				<View style={styles.deleteContainer}>
 					<IconButton
@@ -81,15 +68,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		padding: 24,
 		backgroundColor: GLOBAL_STYLES.colors.primary800,
-	},
-	buttonsContainer: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	button: {
-		minWidth: 120,
-		marginHorizontal: 8,
 	},
 	deleteContainer: {
 		marginTop: 16,
