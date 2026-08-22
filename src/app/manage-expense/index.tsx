@@ -11,11 +11,12 @@ import { GLOBAL_STYLES } from '@/constants/styles';
 
 const ManageExpensePage = () => {
 	const router = useRouter();
-	const { addExpense, updateExpense, deleteExpense } =
+	const { expenses,addExpense, updateExpense, deleteExpense } =
 		useContext(ExpensesContext);
 
 	const { editedExpenseId } = useLocalSearchParams();
 	const isEditing = !!editedExpenseId;
+	const selectedExpense = expenses.find((expense) => expense.id === editedExpenseId);
 
 	const handleDeleteExpense = () => {
 		deleteExpense(editedExpenseId as string);
@@ -44,6 +45,7 @@ const ManageExpensePage = () => {
 			/>
 			<ExpenseForm
 				submitButtonLabel={isEditing ? 'Update' : 'Add'}
+				defaultValues={selectedExpense}
 				onCancel={handleCancel}
 				onSubmit={handleSubmit}
 			/>
