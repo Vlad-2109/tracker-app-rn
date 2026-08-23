@@ -1,14 +1,24 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ExpensesContext } from '@/store/expenses-context';
+import { getDateMinusDays } from '@/utils/date';
+import { fetchExpenses } from '@/utils/http';
 
 import ExpensesOutput from '@/components/ExpensesOutput/ExpensesOutput';
-import { getDateMinusDays } from '@/utils/date';
 
 const RecentExpensesPage = () => {
 	const { expenses } = useContext(ExpensesContext);
+
+	useEffect(() => {
+		const getExpenses = async () => {
+			const response = await fetchExpenses();
+			console.log(response);
+		};
+
+		getExpenses();
+	}, []);
 
 	const recentExpenses = expenses.filter((expense) => {
 		const today = new Date();
