@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -9,12 +9,12 @@ import { fetchExpenses } from '@/utils/http';
 import ExpensesOutput from '@/components/ExpensesOutput/ExpensesOutput';
 
 const RecentExpensesPage = () => {
-	const { expenses } = useContext(ExpensesContext);
+	const { expenses, setExpenses } = useContext(ExpensesContext);
 
 	useEffect(() => {
 		const getExpenses = async () => {
 			const response = await fetchExpenses();
-			console.log(response);
+			setExpenses(response);
 		};
 
 		getExpenses();
