@@ -27,7 +27,7 @@ type ExpenseFormProps = {
 	submitButtonLabel: string;
 	defaultValues: ExpenseData | undefined;
 	onCancel: () => void;
-	onSubmit: (expenseData: ExpenseData) => void;
+	onSubmit: (expenseData: ExpenseData) => Promise<void>;
 };
 
 const ExpenseForm = ({
@@ -59,7 +59,7 @@ const ExpenseForm = ({
 		}));
 	};
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		setIsSubmitting(true);
 
 		const expenseData = {
@@ -84,7 +84,7 @@ const ExpenseForm = ({
 			return;
 		}
 
-		onSubmit(expenseData);
+		await onSubmit(expenseData);
 	};
 
 	const isFormInvalid =

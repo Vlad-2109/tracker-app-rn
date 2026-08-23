@@ -3,11 +3,13 @@ import { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { GLOBAL_STYLES } from '@/constants/styles';
 import { ExpensesContext } from '@/store/expenses-context';
+import { storeExpense } from '@/utils/http';
+
 
 import ExpenseForm, { type ExpenseData } from '@/components/ManageExpense/ExpenseForm';
 import IconButton from '@/components/UI/IconButton';
-import { GLOBAL_STYLES } from '@/constants/styles';
 
 const ManageExpensePage = () => {
 	const router = useRouter();
@@ -27,10 +29,11 @@ const ManageExpensePage = () => {
 		router.back();
 	};
 
-	const handleSubmit = (expenseData: ExpenseData) => {
+	const handleSubmit = async (expenseData: ExpenseData) => {
 		if (isEditing) {
 			updateExpense(editedExpenseId as string, expenseData);
 		} else {
+			await storeExpense(expenseData);
 			addExpense(expenseData);
 		}
 		router.back();
