@@ -1,11 +1,10 @@
-import * as Crypto from 'expo-crypto';
 import { createContext, useReducer } from 'react';
 
 import { Expense } from '@/types';
 
 type ExpensesContextType = {
 	expenses: Expense[];
-	addExpense: ({ description, amount, date }: Omit<Expense, 'id'>) => void;
+	addExpense: (expenseData: Expense) => void;
 	setExpenses: (expenses: Expense[]) => void;
 	deleteExpense: (id: string) => void;
 	updateExpense: (
@@ -26,7 +25,7 @@ enum ExpensesActionKind {
 }
 
 type ExpensesAction =
-	| { type: ExpensesActionKind.ADD; payload: Omit<Expense, 'id'> }
+	| { type: ExpensesActionKind.ADD; payload: Expense }
 	| { type: ExpensesActionKind.DELETE; payload: string }
 	| { type: ExpensesActionKind.SET; payload: Expense[] }
 	| {
@@ -46,9 +45,10 @@ const expensesReducer = (state: Expense[], action: ExpensesAction) => {
 	const { type, payload } = action;
 	switch (type) {
 		case ExpensesActionKind.ADD:
-			return [{ id: Crypto.randomUUID(), ...payload }, ...state];
+			return [payload, ...state];
 		case ExpensesActionKind.SET:
-			return payload;
+			const inverted = payload.reverse();
+			return inverted;
 		case ExpensesActionKind.DELETE:
 			return state.filter((expense) => expense.id !== payload);
 		case ExpensesActionKind.UPDATE:
@@ -70,7 +70,7 @@ const ExpensesContextProvider = ({
 }: ExpensesContextProviderProps) => {
 	const [expensesState, dispatch] = useReducer(expensesReducer, []);
 
-	const addExpense = (expenseData: Omit<Expense, 'id'>) => {
+	const addExpense = (expenseData: Expense) => {
 		dispatch({ type: ExpensesActionKind.ADD, payload: expenseData });
 	};
 

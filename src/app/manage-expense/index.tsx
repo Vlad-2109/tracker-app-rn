@@ -13,7 +13,7 @@ import IconButton from '@/components/UI/IconButton';
 
 const ManageExpensePage = () => {
 	const router = useRouter();
-	const { expenses,addExpense, updateExpense, deleteExpense } =
+	const { expenses, addExpense, updateExpense, deleteExpense } =
 		useContext(ExpensesContext);
 
 	const { editedExpenseId } = useLocalSearchParams();
@@ -33,8 +33,8 @@ const ManageExpensePage = () => {
 		if (isEditing) {
 			updateExpense(editedExpenseId as string, expenseData);
 		} else {
-			await storeExpense(expenseData);
-			addExpense(expenseData);
+			const id =await storeExpense(expenseData);
+			addExpense({ id, ...expenseData });
 		}
 		router.back();
 	};
