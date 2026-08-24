@@ -7,28 +7,45 @@ import { GLOBAL_STYLES } from '@/constants/styles';
 import { ExpensesContext } from '@/store/expenses-context';
 import { deleteExpense, storeExpense, updateExpense } from '@/utils/http';
 
-
-import ExpenseForm, { type ExpenseData } from '@/components/ManageExpense/ExpenseForm';
+import ExpenseForm, {
+	type ExpenseData,
+} from '@/components/ManageExpense/ExpenseForm';
+import ErrorOverlay from '@/components/UI/ErrorOverlay';
 import IconButton from '@/components/UI/IconButton';
 import LoadingOverlay from '@/components/UI/LoadingOverlay';
 
 const ManageExpensePage = () => {
-    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+	const [error, setError] = useState<string | null>(null);
 
 	const router = useRouter();
-	const { expenses, addExpense, updateExpense: updateExpenseCtx, deleteExpense: deleteExpenseCtx } =
-		useContext(ExpensesContext);
+	const {
+		expenses,
+		addExpense,
+		updateExpense: updateExpenseCtx,
+		deleteExpense: deleteExpenseCtx,
+	} = useContext(ExpensesContext);
 
-	const { editedExpenseId } = useLocalSearchParams<{ editedExpenseId: string }>();
+	const { editedExpenseId } = useLocalSearchParams<{
+		editedExpenseId: string;
+	}>();
 	const isEditing = !!editedExpenseId;
-	const selectedExpense = expenses.find((expense) => expense.id === editedExpenseId);
+	const selectedExpense = expenses.find(
+		(expense) => expense.id === editedExpenseId,
+	);
 
 	const handleDeleteExpense = async () => {
 		setIsSubmitting(true);
-		deleteExpenseCtx(editedExpenseId);
-		await deleteExpense(editedExpenseId);
-		setIsSubmitting(false);
-		router.back();
+
+		try {
+			deleteExpenseCtx(editedExpenseId);
+			await deleteExpense(editedExpenseId);
+			router.back();
+		} catch (error) {
+			setError('Could not delete expense - please try again later!');
+		} finally {
+			setIsSubmitting(false);
+		}
 	};
 
 	const handleCancel = () => {
@@ -37,16 +54,29 @@ const ManageExpensePage = () => {
 
 	const handleSubmit = async (expenseData: ExpenseData) => {
 		setIsSubmitting(true);
-		if (isEditing) {
-			updateExpenseCtx(editedExpenseId, expenseData);
-			await updateExpense(editedExpenseId, expenseData);
-		} else {
-			const id = await storeExpense(expenseData);
-			addExpense({ id, ...expenseData });
+		try {
+			if (isEditing) {
+				updateExpenseCtx(editedExpenseId, expenseData);
+				await updateExpense(editedExpenseId, expenseData);
+			} else {
+				const id = await storeExpense(expenseData);
+				addExpense({ id, ...expenseData });
+			}
+			router.back();
+		} catch (error) {
+			setError('Could not save expense - please try again later!');
+		} finally {
+			setIsSubmitting(false);
 		}
-		setIsSubmitting(false);
-		router.back();
 	};
+
+	const handleError = () => {
+		setError(null);
+	};
+
+	if (error && !isSubmitting) {
+		return <ErrorOverlay message={error} onConfirm={handleError} />;
+	}
 
 	if (isSubmitting) {
 		return <LoadingOverlay />;
