@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { GLOBAL_STYLES } from '@/constants/styles';
 import { ExpensesContext } from '@/store/expenses-context';
-import { storeExpense } from '@/utils/http';
+import { deleteExpense, storeExpense, updateExpense } from '@/utils/http';
 
 
 import ExpenseForm, { type ExpenseData } from '@/components/ManageExpense/ExpenseForm';
@@ -13,15 +13,16 @@ import IconButton from '@/components/UI/IconButton';
 
 const ManageExpensePage = () => {
 	const router = useRouter();
-	const { expenses, addExpense, updateExpense, deleteExpense } =
+	const { expenses, addExpense, updateExpense: updateExpenseCtx, deleteExpense: deleteExpenseCtx } =
 		useContext(ExpensesContext);
 
-	const { editedExpenseId } = useLocalSearchParams();
+	const { editedExpenseId } = useLocalSearchParams<{ editedExpenseId: string }>();
 	const isEditing = !!editedExpenseId;
 	const selectedExpense = expenses.find((expense) => expense.id === editedExpenseId);
 
-	const handleDeleteExpense = () => {
-		deleteExpense(editedExpenseId as string);
+	const handleDeleteExpense = async () => {
+		deleteExpenseCtx(editedExpenseId);
+		await deleteExpense(editedExpenseId);
 		router.back();
 	};
 
@@ -31,9 +32,10 @@ const ManageExpensePage = () => {
 
 	const handleSubmit = async (expenseData: ExpenseData) => {
 		if (isEditing) {
-			updateExpense(editedExpenseId as string, expenseData);
+			updateExpenseCtx(editedExpenseId, expenseData);
+			await updateExpense(editedExpenseId, expenseData);
 		} else {
-			const id =await storeExpense(expenseData);
+			const id = await storeExpense(expenseData);
 			addExpense({ id, ...expenseData });
 		}
 		router.back();

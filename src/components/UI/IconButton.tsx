@@ -5,7 +5,7 @@ type IconButtonProps = {
 	icon: keyof typeof Ionicons.glyphMap;
 	size: number;
 	color: ColorValue;
-	onPress: () => void;
+	onPress: () => Promise<void> | void;
 };
 
 const IconButton = ({ icon, size, color, onPress }: IconButtonProps) => {
