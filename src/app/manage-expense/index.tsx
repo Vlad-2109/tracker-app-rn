@@ -1,5 +1,5 @@
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -10,8 +10,11 @@ import { deleteExpense, storeExpense, updateExpense } from '@/utils/http';
 
 import ExpenseForm, { type ExpenseData } from '@/components/ManageExpense/ExpenseForm';
 import IconButton from '@/components/UI/IconButton';
+import LoadingOverlay from '@/components/UI/LoadingOverlay';
 
 const ManageExpensePage = () => {
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
 	const router = useRouter();
 	const { expenses, addExpense, updateExpense: updateExpenseCtx, deleteExpense: deleteExpenseCtx } =
 		useContext(ExpensesContext);
@@ -21,8 +24,10 @@ const ManageExpensePage = () => {
 	const selectedExpense = expenses.find((expense) => expense.id === editedExpenseId);
 
 	const handleDeleteExpense = async () => {
+		setIsSubmitting(true);
 		deleteExpenseCtx(editedExpenseId);
 		await deleteExpense(editedExpenseId);
+		setIsSubmitting(false);
 		router.back();
 	};
 
@@ -31,6 +36,7 @@ const ManageExpensePage = () => {
 	};
 
 	const handleSubmit = async (expenseData: ExpenseData) => {
+		setIsSubmitting(true);
 		if (isEditing) {
 			updateExpenseCtx(editedExpenseId, expenseData);
 			await updateExpense(editedExpenseId, expenseData);
@@ -38,8 +44,13 @@ const ManageExpensePage = () => {
 			const id = await storeExpense(expenseData);
 			addExpense({ id, ...expenseData });
 		}
+		setIsSubmitting(false);
 		router.back();
 	};
+
+	if (isSubmitting) {
+		return <LoadingOverlay />;
+	}
 
 	return (
 		<SafeAreaView edges={['bottom', 'left', 'right']} style={styles.container}>

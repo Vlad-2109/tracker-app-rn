@@ -7,14 +7,18 @@ import { getDateMinusDays } from '@/utils/date';
 import { fetchExpenses } from '@/utils/http';
 
 import ExpensesOutput from '@/components/ExpensesOutput/ExpensesOutput';
+import LoadingOverlay from '@/components/UI/LoadingOverlay';
 
 const RecentExpensesPage = () => {
+	const [isFetching, setIsFetching] = useState<boolean>(true);
 	const { expenses, setExpenses } = useContext(ExpensesContext);
 
 	useEffect(() => {
 		const getExpenses = async () => {
+			setIsFetching(true);
 			const response = await fetchExpenses();
 			setExpenses(response);
+			setIsFetching(false);
 		};
 
 		getExpenses();
@@ -26,6 +30,10 @@ const RecentExpensesPage = () => {
 
 		return expense.date > date7DaysAgo && expense.date <= today;
 	});
+
+	if (isFetching) {
+		return <LoadingOverlay />;
+	}
 
 	return (
 		<SafeAreaView edges={['left', 'right']} style={styles.container}>
